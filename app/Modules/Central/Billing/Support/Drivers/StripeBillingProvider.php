@@ -9,9 +9,38 @@ use App\Modules\Central\Billing\Support\PlanManager;
 use App\Modules\Central\Provisioning\Models\Tenant;
 use App\Modules\Shared\Contracts\BillingProvider;
 
+use App\Modules\Shared\Contracts\Billing\SubscriptionInterface;
+use App\Modules\Shared\Services\Billing\Subscriptions\GenericSubscription;
+
 class StripeBillingProvider implements BillingProvider
 {
-    public function createCheckoutSession(Tenant $tenant, string $planId): string
+    public function getSubscription(TenantContract $tenant): SubscriptionInterface
+    {
+        /** @var \App\Modules\Central\Provisioning\Models\Tenant $tenant */
+        $subscription = $tenant->subscription('default');
+
+        if (! $subscription) {
+            return new GenericSubscription(
+                isActive: false,
+                plan: 'none',
+                expiryDate: null,
+                status: 'inactive',
+                provider: 'stripe'
+            );
+        }
+
+        return new GenericSubscription(
+            isActive: $subscription->active(),
+            plan: $tenant->plan_id ?? 'unknown',
+            expiryDate: $subscription->ends_at,
+            status: $subscription->stripe_status,
+            provider: 'stripe',
+            onGracePeriod: $subscription->onGracePeriod(),
+            isCancelled: $subscription->canceled()
+        );
+    }
+
+    public function createCheckoutSession(TenantContract $tenant, string $planId): string
     {
         $stripeId = PlanManager::getStripeId($planId);
 
@@ -32,8 +61,9 @@ class StripeBillingProvider implements BillingProvider
             ])->url;
     }
 
-    public function cancelSubscription(Tenant $tenant, string $subscriptionId, bool $immediately = false): void
+    public function cancelSubscription(TenantContract $tenant, string $subscriptionId, bool $immediately = false): void
     {
+        /** @var \App\Modules\Central\Provisioning\Models\Tenant $tenant */
         $subscription = $tenant->subscriptions()->where('stripe_id', $subscriptionId)->first();
 
         if (! $subscription) {
@@ -47,8 +77,9 @@ class StripeBillingProvider implements BillingProvider
         }
     }
 
-    public function syncSubscription(Tenant $tenant): void
+    public function syncSubscription(TenantContract $tenant): void
     {
+        /** @var \App\Modules\Central\Provisioning\Models\Tenant $tenant */
         $tenant->updateStripeCustomer();
         
         $subscription = $tenant->subscription('default');
@@ -60,8 +91,9 @@ class StripeBillingProvider implements BillingProvider
         app(SyncInvoicesAction::class)->execute($tenant);
     }
 
-    public function getSubscriptionData(Tenant $tenant, string $subscriptionId): ?array
+    public function getSubscriptionData(TenantContract $tenant, string $subscriptionId): ?array
     {
+        /** @var \App\Modules\Central\Provisioning\Models\Tenant $tenant */
         $subscription = $tenant->subscriptions()->where('stripe_id', $subscriptionId)->first();
 
         if (! $subscription) {
@@ -77,8 +109,9 @@ class StripeBillingProvider implements BillingProvider
         ];
     }
 
-    public function getInvoices(Tenant $tenant): array
+    public function getInvoices(TenantContract $tenant): array
     {
+        /** @var \App\Modules\Central\Provisioning\Models\Tenant $tenant */
         return $tenant->invoices()->toArray();
     }
 }

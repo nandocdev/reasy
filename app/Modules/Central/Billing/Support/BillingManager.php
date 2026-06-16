@@ -6,11 +6,9 @@ namespace App\Modules\Central\Billing\Support;
 
 use App\Modules\Central\Billing\Support\Drivers\InternalBillingProvider;
 use App\Modules\Central\Billing\Support\Drivers\StripeBillingProvider;
-use App\Modules\Central\Provisioning\Models\Tenant;
-use App\Modules\Shared\Contracts\BillingProvider;
-use Illuminate\Support\Manager;
+use App\Modules\Shared\Services\Billing\BillingManager as BaseBillingManager;
 
-class BillingManager extends Manager implements BillingProvider
+class BillingManager extends BaseBillingManager
 {
     public function getDefaultDriver(): string
     {
@@ -35,36 +33,5 @@ class BillingManager extends Manager implements BillingProvider
     public function createClaveDriver(): InternalBillingProvider
     {
         return $this->createPaguelofacilDriver();
-    }
-
-
-    public function forTenant(Tenant $tenant): BillingProvider
-    {
-        return $this->driver($tenant->billing_gateway ?? $this->getDefaultDriver());
-    }
-
-    public function createCheckoutSession(Tenant $tenant, string $planId): string
-    {
-        return $this->forTenant($tenant)->createCheckoutSession($tenant, $planId);
-    }
-
-    public function cancelSubscription(Tenant $tenant, string $subscriptionId, bool $immediately = false): void
-    {
-        $this->forTenant($tenant)->cancelSubscription($tenant, $subscriptionId, $immediately);
-    }
-
-    public function getSubscriptionData(Tenant $tenant, string $subscriptionId): ?array
-    {
-        return $this->forTenant($tenant)->getSubscriptionData($tenant, $subscriptionId);
-    }
-
-    public function syncSubscription(Tenant $tenant): void
-    {
-        $this->forTenant($tenant)->syncSubscription($tenant);
-    }
-
-    public function getInvoices(Tenant $tenant): array
-    {
-        return $this->forTenant($tenant)->getInvoices($tenant);
     }
 }

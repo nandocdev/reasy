@@ -10,25 +10,54 @@ use App\Modules\Central\Payments\Contracts\PaymentGateway;
 use App\Modules\Central\Provisioning\Models\Tenant;
 use App\Modules\Shared\Contracts\BillingProvider;
 
+use App\Modules\Shared\Contracts\Billing\SubscriptionInterface;
+use App\Modules\Shared\Contracts\TenantContract;
+use App\Modules\Shared\Services\Billing\Subscriptions\GenericSubscription;
+
 class InternalBillingProvider implements BillingProvider
 {
     public function __construct(
         private PagueloFacilClient $client
     ) {}
 
-    public function createCheckoutSession(Tenant $tenant, string $planId): string
+    public function getSubscription(TenantContract $tenant): SubscriptionInterface
+    {
+        /** @var \App\Modules\Central\Provisioning\Models\Tenant $tenant */
+        $subscription = $tenant->subscriptions()->latest()->first();
+
+        if (! $subscription) {
+            return new GenericSubscription(
+                isActive: false,
+                plan: 'none',
+                expiryDate: null,
+                status: 'inactive',
+                provider: 'manual'
+            );
+        }
+
+        return new GenericSubscription(
+            isActive: $subscription->status === 'active',
+            plan: $tenant->plan_id ?? 'unknown',
+            expiryDate: $subscription->current_period_end,
+            status: $subscription->status,
+            provider: 'manual'
+        );
+    }
+
+    public function createCheckoutSession(TenantContract $tenant, string $planId): string
     {
         return route('tenant.billing.checkout.hosted', [
-            'tenant_uuid' => $tenant->id,
+            'tenant_uuid' => $tenant->getId(),
             'plan_uuid' => $planId,
         ]);
     }
 
-    public function cancelSubscription(Tenant $tenant, string $subscriptionId, bool $immediately = false): void
+    public function cancelSubscription(TenantContract $tenant, string $subscriptionId, bool $immediately = false): void
     {
         try {
             $this->client->cancelSubscription($subscriptionId);
             
+            /** @var \App\Modules\Central\Provisioning\Models\Tenant $tenant */
             $tenant->subscriptions()
                 ->where('provider_subscription_id', $subscriptionId)
                 ->update(['status' => 'cancelled']);
@@ -39,8 +68,9 @@ class InternalBillingProvider implements BillingProvider
         }
     }
 
-    public function syncSubscription(Tenant $tenant): void
+    public function syncSubscription(TenantContract $tenant): void
     {
+        /** @var \App\Modules\Central\Provisioning\Models\Tenant $tenant */
         $subscription = $tenant->subscriptions()->latest()->first();
 
         if ($subscription && $subscription->provider_subscription_id) {
@@ -54,12 +84,12 @@ class InternalBillingProvider implements BillingProvider
                     ]);
                 }
             } catch (\Exception $e) {
-                \Log::error("Failed to sync PagueloFacil subscription for tenant {$tenant->id}: {$e->getMessage()}");
+                \Log::error("Failed to sync PagueloFacil subscription for tenant {$tenant->getId()}: {$e->getMessage()}");
             }
         }
     }
 
-    public function getSubscriptionData(Tenant $tenant, string $subscriptionId): ?array
+    public function getSubscriptionData(TenantContract $tenant, string $subscriptionId): ?array
     {
         try {
             $response = $this->client->getSubscription($subscriptionId);
@@ -75,20 +105,17 @@ class InternalBillingProvider implements BillingProvider
         }
     }
 
-    public function getInvoices(Tenant $tenant): array
+    public function getInvoices(TenantContract $tenant): array
     {
         $gateway = app(PaymentGateway::class);
         $apiKey = config("payments.{$gateway->identifier()}.api_key") 
                ?? config("payments.{$gateway->identifier()}.login");
 
         $transactions = $gateway->listTransactions((string) $apiKey, [
-            'PARM_1' => $tenant->id, // For Clave
-            'tenant_id' => $tenant->id, // For dLocal fallback
+            'PARM_1' => $tenant->getId(), // For Clave
+            'tenant_id' => $tenant->getId(), // For dLocal fallback
         ]);
 
-        // Map gateway transactions to standard Invoice format if needed, 
-        // or just return the raw data for now. 
-        // The SyncInvoicesAction will handle the persistence.
         return $transactions;
     }
 }
