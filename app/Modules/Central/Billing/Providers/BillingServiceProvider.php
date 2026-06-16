@@ -52,6 +52,7 @@ class BillingServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \App\Modules\Central\Billing\Console\Commands\ReconcileSubscriptionsCommand::class,
+                \App\Modules\Central\Billing\Console\Commands\CheckExpirationsCommand::class,
             ]);
         }
 

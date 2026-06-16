@@ -18,10 +18,10 @@ Este documento define la estrategia técnica para unificar la facturación globa
 ## 3. Fase de Control (Enforcement)
 **Objetivo:** Bloqueo automático por falta de pago.
 
-- [ ] **Middleware `EnsureTenantHasActiveSubscription`**: 
+- [x] **Middleware `EnsureTenantHasActiveSubscription`**: 
     - Si el Tenant está en un plan de pago pero no tiene una suscripción válida/activa, redirigir a `/billing`.
     - Excepción: Permitir acceso a `Settings` y `Billing` para que puedan regularizar su situación.
-- [ ] **Comando de Consola `billing:check-expirations`**: Un Job diario que marque como `past_due` o `suspended` a los tenants que pagan vía PagueLoFácil y cuyo periodo ha expirado.
+- [x] **Comando de Consola `billing:check-expirations`**: Un Job diario que marque como `past_due` o `suspended` a los tenants que pagan vía PagueLoFácil y cuyo periodo ha expirado.
 
 ## 4. Fase de UI (Admin & Tenant)
 **Objetivo:** Visibilidad del estado.

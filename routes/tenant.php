@@ -70,7 +70,8 @@ Route::middleware([
         'auth', 
         \App\Modules\Tenant\Identity\Http\Middleware\EnforceTenantMfa::class,
         \App\Modules\Tenant\Identity\Http\Middleware\EnsureUserIsActive::class,
-        \App\Modules\Tenant\Identity\Http\Middleware\EnsureUserBelongsToTenant::class
+        \App\Modules\Tenant\Identity\Http\Middleware\EnsureUserBelongsToTenant::class,
+        \App\Modules\Shared\Tenancy\Http\Middleware\EnsureTenantHasActiveSubscription::class,
     ])->group(function () {
         Route::view('dashboard', 'dashboard')->name('dashboard');
         
