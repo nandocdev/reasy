@@ -50,6 +50,10 @@
                     :current="request()->routeIs('tenant.reasy.services.*')" wire:navigate>
                     {{ __('Services') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="users" :href="route('tenant.reasy.resources.index')"
+                    :current="request()->routeIs('tenant.reasy.resources.*')" wire:navigate>
+                    {{ __('Resources') }}
+                </flux:sidebar.item>
                 <flux:sidebar.item icon="squares-2x2" :href="route('tenant.reasy.service-categories.index')"
                     :current="request()->routeIs('tenant.reasy.service-categories.*')" wire:navigate>
                     {{ __('Categories') }}
