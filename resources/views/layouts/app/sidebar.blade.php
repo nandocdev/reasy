@@ -58,6 +58,10 @@
                     :current="request()->routeIs('tenant.reasy.service-categories.*')" wire:navigate>
                     {{ __('Categories') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="calendar-days" :href="route('tenant.reasy.schedules.index')"
+                    :current="request()->routeIs('tenant.reasy.schedules.*')" wire:navigate>
+                    {{ __('Availability') }}
+                </flux:sidebar.item>
                 <flux:sidebar.item icon="document-text" :href="route('tenant.reasy.cancellation-policies.index')"
                     :current="request()->routeIs('tenant.reasy.cancellation-policies.*')" wire:navigate>
                     {{ __('Cancellation Policies') }}

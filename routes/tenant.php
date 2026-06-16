@@ -108,6 +108,7 @@ Route::middleware([
             require base_path('app/Modules/Tenant/Reasy/Locations/Routes/web.php');
             require base_path('app/Modules/Tenant/Reasy/Services/Routes/web.php');
             require base_path('app/Modules/Tenant/Reasy/Resources/Routes/web.php');
+            require base_path('app/Modules/Tenant/Reasy/Schedules/Routes/web.php');
         });
     });
 });
