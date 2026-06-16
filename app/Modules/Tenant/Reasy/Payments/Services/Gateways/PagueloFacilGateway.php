@@ -8,7 +8,8 @@ use App\Modules\Shared\Payments\Contracts\PaymentGateway;
 use App\Modules\Shared\Payments\DTOs\MerchantData;
 use App\Modules\Shared\Payments\DTOs\PaymentData;
 use App\Modules\Shared\Payments\DTOs\PaymentResultData;
-use App\Modules\Tenant\Reasy\Payments\DTOs\PaymentData as TenantPaymentData;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PagueloFacilGateway implements PaymentGateway
 {
@@ -19,26 +20,38 @@ class PagueloFacilGateway implements PaymentGateway
 
     public function loadMerchant(string $apiKey): MerchantData
     {
-        // Implementación específica de PagueloFacil
+        // Placeholder para la llamada a la API de PagueloFacil
+        Log::info('Cargando comerciante desde PagueloFacil');
         throw new \Exception("Not implemented yet");
     }
 
     public function buildCheckoutUrl(PaymentData $payment, string $apiKey): string
     {
-        // Implementación específica de PagueloFacil
-        throw new \Exception("Not implemented yet");
+        // En un escenario real, aquí se llamaría a la API de PagueloFacil
+        // para generar la sesión y obtener la URL.
+        
+        Log::info('Generando URL de checkout para PagueloFacil', ['order_id' => $payment->orderId]);
+
+        // Simulación: en producción, esto devolvería la URL real del gateway
+        return 'https://sandbox.paguelofacil.com/checkout/' . $payment->orderId;
     }
 
     public function verifyWebhook(string $payload, string $signature, string $secret): bool
     {
-        // Implementación específica de PagueloFacil
-        return true;
+        // Implementación de verificación HMAC-SHA256
+        $expectedSignature = hash_hmac('sha256', $payload, $secret);
+        
+        return hash_equals($expectedSignature, $signature);
     }
 
     public function parseWebhookPayload(array $payload): PaymentResultData
     {
-        // Implementación específica de PagueloFacil
-        return new PaymentResultData(success: true);
+        // Parseo específico según la estructura de JSON de PagueloFacil
+        return new PaymentResultData(
+            success: ($payload['status'] ?? '') === 'approved',
+            transactionId: $payload['transaction_id'] ?? null,
+            message: $payload['message'] ?? null
+        );
     }
 
     public function listTransactions(string $apiKey, array $filters = []): array
