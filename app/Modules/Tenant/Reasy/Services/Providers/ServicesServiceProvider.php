@@ -23,7 +23,6 @@ class ServicesServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../UI', 'services-tenant');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
 
         Livewire::component('reasy-service-list', ServiceList::class);
         Livewire::component('reasy-manage-service', ManageService::class);

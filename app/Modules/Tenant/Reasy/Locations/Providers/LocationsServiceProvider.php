@@ -19,7 +19,6 @@ class LocationsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../UI', 'locations-tenant');
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
 
         Livewire::component('reasy-location-list', LocationList::class);
         Livewire::component('reasy-manage-location', ManageLocation::class);

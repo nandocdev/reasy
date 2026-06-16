@@ -102,5 +102,11 @@ Route::middleware([
 
         // Landing Builder
         Route::get('/landings/{landing}/builder', \App\Modules\Central\Landings\Livewire\LandingBuilder::class)->name('tenant.landings.builder');
+
+        // Reasy Product Routes
+        Route::prefix('admin/reasy')->name('tenant.reasy.')->group(function () {
+            require base_path('app/Modules/Tenant/Reasy/Locations/Routes/web.php');
+            require base_path('app/Modules/Tenant/Reasy/Services/Routes/web.php');
+        });
     });
 });
