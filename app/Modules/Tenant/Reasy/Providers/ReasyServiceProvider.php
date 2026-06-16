@@ -11,6 +11,7 @@ class ReasyServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(\App\Modules\Tenant\Reasy\Locations\Providers\LocationsServiceProvider::class);
+        $this->app->register(\App\Modules\Tenant\Reasy\Services\Providers\ServicesServiceProvider::class);
     }
 
     public function boot(): void

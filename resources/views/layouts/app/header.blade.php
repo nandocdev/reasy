@@ -63,6 +63,18 @@
                         :current="request()->routeIs('tenant.reasy.locations.*')" wire:navigate>
                         {{ __('Locations') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="briefcase" :href="route('tenant.reasy.services.index')"
+                        :current="request()->routeIs('tenant.reasy.services.*')" wire:navigate>
+                        {{ __('Services') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="squares-2x2" :href="route('tenant.reasy.service-categories.index')"
+                        :current="request()->routeIs('tenant.reasy.service-categories.*')" wire:navigate>
+                        {{ __('Categories') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="document-text" :href="route('tenant.reasy.cancellation-policies.index')"
+                        :current="request()->routeIs('tenant.reasy.cancellation-policies.*')" wire:navigate>
+                        {{ __('Cancellation Policies') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

@@ -6,11 +6,12 @@ namespace App\Modules\Tenant\Reasy\Services\Models;
 
 use App\Modules\Shared\Tenancy\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ServiceCategory extends Model
 {
-    use BelongsToTenant, HasUuids;
+    use BelongsToTenant, HasFactory, HasUuids;
 
     protected $fillable = [
         'name',
@@ -22,5 +23,10 @@ class ServiceCategory extends Model
     public function services()
     {
         return $this->hasMany(Service::class, 'category_id');
+    }
+
+    protected static function newFactory()
+    {
+        return \App\Modules\Tenant\Reasy\Services\Database\Factories\ServiceCategoryFactory::new();
     }
 }

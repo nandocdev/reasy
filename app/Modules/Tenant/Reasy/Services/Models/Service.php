@@ -6,12 +6,13 @@ namespace App\Modules\Tenant\Reasy\Services\Models;
 
 use App\Modules\Shared\Tenancy\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends Model
 {
-    use BelongsToTenant, HasUuids, SoftDeletes;
+    use BelongsToTenant, HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'category_id',
@@ -45,5 +46,10 @@ class Service extends Model
     public function cancellationPolicy()
     {
         return $this->belongsTo(CancellationPolicy::class, 'cancellation_policy_id');
+    }
+
+    protected static function newFactory()
+    {
+        return \App\Modules\Tenant\Reasy\Services\Database\Factories\ServiceFactory::new();
     }
 }
