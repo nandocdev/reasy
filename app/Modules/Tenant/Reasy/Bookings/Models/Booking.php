@@ -10,12 +10,13 @@ use App\Modules\Tenant\Reasy\Services\Models\Service;
 use App\Modules\Tenant\Reasy\Resources\Models\Resource;
 use App\Modules\Tenant\Reasy\Customers\Models\Customer;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
-    use BelongsToTenant, HasUuids, SoftDeletes;
+    use BelongsToTenant, HasUuids, SoftDeletes, HasFactory;
 
     protected $fillable = [
         'location_id',
@@ -57,5 +58,10 @@ class Booking extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    protected static function newFactory()
+    {
+        return \App\Modules\Tenant\Reasy\Bookings\Database\Factories\BookingFactory::new();
     }
 }
