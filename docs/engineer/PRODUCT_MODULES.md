@@ -77,7 +77,7 @@ The computational engine for slots and availability.
   - `GenerateSlotsAction` (Real-time calculation).
   - `CreateManualBlockAction`.
 
-## 5. Bookings (Reservas)
+## exceleContinua con el
 **Namespace:** `App\Modules\Tenant\Reasy\Bookings`
 
 Core module managing the lifecycle of appointments.
