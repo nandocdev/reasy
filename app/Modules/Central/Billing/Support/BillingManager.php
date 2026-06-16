@@ -35,6 +35,11 @@ class BillingManager extends BaseBillingManager
         return $this->createPaguelofacilDriver();
     }
 
+    public function createManualDriver(): InternalBillingProvider
+    {
+        return $this->createPaguelofacilDriver();
+    }
+
     /**
      * Get a unified list of invoices for the tenant.
      * Overrides the default driver-specific behavior to provide a consolidated view from the local database.

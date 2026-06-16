@@ -49,6 +49,20 @@
             <span wire:loading>{{ __('Initializing...') }}</span>
         </flux:button>
 
+        @if(app()->isLocal())
+            <div class="mt-8 pt-8 border-t border-zinc-100 dark:border-zinc-800 w-full flex flex-col items-center">
+                <flux:text size="xs" color="zinc" class="mb-4 uppercase tracking-widest font-bold">{{ __('Dev Tools: Simulate Success') }}</flux:text>
+                <flux:button 
+                    wire:click="handlePaymentResult('approved', '{{ $displayId }}')" 
+                    variant="ghost" 
+                    size="sm"
+                    class="text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                >
+                    {{ __('Simulate Approved Payment') }}
+                </flux:button>
+            </div>
+        @endif
+
         <div class="mt-6 flex items-center gap-2 text-zinc-400">
             <flux:icon.lock-closed size="xs" />
             <span

@@ -115,11 +115,11 @@
                     <div class="flex items-center justify-between w-full">
                         <span>{{ __('Billing') }}</span>
                         @if (!$subscription->isActive())
-                            <flux:badge size="sm" variant="danger" inset="none">{{ __('Inactive') }}</flux:badge>
+                            <flux:badge size="sm" variant="danger">{{ __('Inactive') }}</flux:badge>
                         @elseif ($subscription->onGracePeriod())
-                            <flux:badge size="sm" variant="warning" inset="none">{{ __('Grace') }}</flux:badge>
+                            <flux:badge size="sm" variant="warning">{{ __('Grace') }}</flux:badge>
                         @elseif ($isExpiringSoon)
-                            <flux:badge size="sm" variant="warning" inset="none">{{ __('Expiring') }}</flux:badge>
+                            <flux:badge size="sm" variant="warning">{{ __('Expiring') }}</flux:badge>
                         @endif
                     </div>
                 </flux:sidebar.item>

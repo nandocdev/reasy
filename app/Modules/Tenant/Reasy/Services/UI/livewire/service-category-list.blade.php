@@ -32,7 +32,8 @@
                              <flux:text color="zinc">{{ $category->slug }}</flux:text>
                         </flux:table.cell>
                         <flux:table.cell>
-                             <flux:badge size="sm" inset="none">{{ $category->services_count ?? $category->services()->count() }}</flux:badge>
+                             <flux:badge size="sm">{{ $category->services_count ?? $category->services()->count() }}</flux:badge>
+
                         </flux:table.cell>
                         <flux:table.cell align="end">
                             <flux:dropdown>
