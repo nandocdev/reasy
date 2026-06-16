@@ -57,6 +57,13 @@
                         {{ __('Dashboard')  }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                <flux:sidebar.group :heading="__('Booking Management')">
+                    <flux:sidebar.item icon="map-pin" :href="route('tenant.reasy.locations.index')"
+                        :current="request()->routeIs('tenant.reasy.locations.*')" wire:navigate>
+                        {{ __('Locations') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <flux:spacer />

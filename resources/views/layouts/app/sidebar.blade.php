@@ -41,6 +41,13 @@
                 @endif
             </flux:sidebar.group>
 
+            <flux:sidebar.group :heading="__('Booking Management')" class="grid">
+                <flux:sidebar.item icon="map-pin" :href="route('tenant.reasy.locations.index')"
+                    :current="request()->routeIs('tenant.reasy.locations.*')" wire:navigate>
+                    {{ __('Locations') }}
+                </flux:sidebar.item>
+            </flux:sidebar.group>
+
             <flux:sidebar.group :heading="__('Settings')" class="grid">
                 <flux:sidebar.item icon="paint-brush" :href="route('tenant.settings.branding')"
                     :current="request()->routeIs('tenant.settings.branding')" wire:navigate>
