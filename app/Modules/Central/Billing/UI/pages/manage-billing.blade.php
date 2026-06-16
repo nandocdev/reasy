@@ -12,7 +12,7 @@
         <!-- Current Plan -->
         <flux:card>
             @php
-                $isActive = $subscription && ($subscription->active() || $subscription->onGracePeriod());
+                $isActive = $subscription->isActive() || $subscription->onGracePeriod();
                 $isPaidPlan = $tenant->plan_id !== 'free';
                 $needsPayment = $isPaidPlan && ! $isActive;
             @endphp
@@ -31,19 +31,19 @@
             </div>
 
             <div class="space-y-4">
-                @if ($subscription)
+                @if ($subscription->getStatus() !== 'inactive')
                     <div class="flex justify-between text-sm">
                         <span class="text-zinc-500">{{ __('Status') }}</span>
                         <span class="font-medium {{ $needsPayment ? 'text-red-500' : '' }}">
-                            {{ strtoupper($subscription->stripe_status) }}
+                            {{ strtoupper($subscription->getStatus()) }}
                         </span>
                     </div>
                     
-                    @if($isActive)
+                    @if($isActive && $subscription->getExpiryDate())
                         <div class="flex justify-between text-sm">
                             <span class="text-zinc-500">{{ __('Next billing date') }}</span>
                             <span
-                                class="font-medium">{{ $subscription->nextPayment() ? $subscription->nextPayment()->date()->format('M j, Y') : 'N/A' }}</span>
+                                class="font-medium">{{ \Illuminate\Support\Carbon::instance($subscription->getExpiryDate())->format('M j, Y') }}</span>
                         </div>
                     @endif
 
@@ -112,7 +112,7 @@
                 <flux:table.rows>
                     @forelse($invoices as $invoice)
                         <flux:table.row :key="$invoice->id">
-                            <flux:table.cell>{{ $invoice->created_at->format('M j, Y') }}</flux:table.cell>
+                            <flux:table.cell>{{ $invoice->issued_at->format('M j, Y') }}</flux:table.cell>
                             <flux:table.cell>{{ \App\Modules\Shared\Infrastructure\Services\PriceFormatter::format($invoice->amount) }}</flux:table.cell>
                             <flux:table.cell>
                                 <flux:badge size="sm"

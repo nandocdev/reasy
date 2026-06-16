@@ -23,11 +23,12 @@ Este documento define la estrategia técnica para unificar la facturación globa
     - Excepción: Permitir acceso a `Settings` y `Billing` para que puedan regularizar su situación.
 - [x] **Comando de Consola `billing:check-expirations`**: Un Job diario que marque como `past_due` o `suspended` a los tenants que pagan vía PagueLoFácil y cuyo periodo ha expirado.
 
+
 ## 4. Fase de UI (Admin & Tenant)
 **Objetivo:** Visibilidad del estado.
 
-- [ ] **Badge de Estado en Sidebar**: Mostrar visualmente si la suscripción está próxima a vencer.
-- [ ] **Vista de Historial de Facturas Unificado**: Una tabla que liste tanto Invoices de Stripe como registros de PagueLoFácil.
+- [x] **Badge de Estado en Sidebar**: Mostrar visualmente si la suscripción está próxima a vencer.
+- [x] **Vista de Historial de Facturas Unificado**: Una tabla que liste tanto Invoices de Stripe como registros de PagueLoFácil.
 
 ---
 

@@ -17,7 +17,7 @@ class ManageBilling extends Component
     public function render(): View
     {
         $tenant = tenant();
-        $subscription = $tenant->subscription('default');
+        $subscription = app('billing')->getSubscription($tenant);
 
         // Dispatch sync as background job
         \App\Modules\Central\Billing\Jobs\SyncTenantInvoicesJob::dispatch($tenant);
@@ -25,7 +25,7 @@ class ManageBilling extends Component
         return view('billing::pages.manage-billing', [
             'tenant' => $tenant,
             'subscription' => $subscription,
-            'invoices' => Invoice::where('tenant_id', $tenant->id)->latest()->take(10)->get(),
+            'invoices' => app('billing')->getInvoices($tenant),
         ]);
     }
 }

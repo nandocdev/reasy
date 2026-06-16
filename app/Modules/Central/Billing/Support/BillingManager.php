@@ -34,4 +34,16 @@ class BillingManager extends BaseBillingManager
     {
         return $this->createPaguelofacilDriver();
     }
+
+    /**
+     * Get a unified list of invoices for the tenant.
+     * Overrides the default driver-specific behavior to provide a consolidated view from the local database.
+     */
+    public function getInvoices(\App\Modules\Shared\Contracts\TenantContract $tenant): array
+    {
+        return \App\Modules\Central\Billing\Models\Invoice::where('tenant_id', $tenant->getId())
+            ->latest('issued_at')
+            ->get()
+            ->all();
+    }
 }

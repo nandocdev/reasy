@@ -101,9 +101,27 @@
                     :current="request()->routeIs('tenant.audit.*')" wire:navigate>
                     {{ __('Audit Log') }}
                 </flux:sidebar.item>
+
+                @php
+                    $subscription = app('billing')->getSubscription(tenant());
+                    $isExpiringSoon = false;
+                    if ($subscription->isActive() && $subscription->getExpiryDate()) {
+                        $isExpiringSoon = \Illuminate\Support\Carbon::instance($subscription->getExpiryDate())->isFuture() && 
+                                         \Illuminate\Support\Carbon::instance($subscription->getExpiryDate())->diffInDays(now()) <= 3;
+                    }
+                @endphp
                 <flux:sidebar.item icon="credit-card" :href="route('tenant.billing.manage')"
                     :current="request()->routeIs('tenant.billing.*')" wire:navigate>
-                    {{ __('Billing') }}
+                    <div class="flex items-center justify-between w-full">
+                        <span>{{ __('Billing') }}</span>
+                        @if (!$subscription->isActive())
+                            <flux:badge size="sm" variant="danger" inset="none">{{ __('Inactive') }}</flux:badge>
+                        @elseif ($subscription->onGracePeriod())
+                            <flux:badge size="sm" variant="warning" inset="none">{{ __('Grace') }}</flux:badge>
+                        @elseif ($isExpiringSoon)
+                            <flux:badge size="sm" variant="warning" inset="none">{{ __('Expiring') }}</flux:badge>
+                        @endif
+                    </div>
                 </flux:sidebar.item>
             </flux:sidebar.group>
         </flux:sidebar.nav>
