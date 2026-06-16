@@ -31,11 +31,15 @@ class TenantSetting extends Model
         'smtp_from_email',
         'smtp_from_name',
         'smtp_verified',
+        'paguelo_facil_api_key',
+        'paguelo_facil_webhook_secret',
     ];
 
     protected $casts = [
         'mfa_required' => 'boolean',
         'smtp_verified' => 'boolean',
         'smtp_password' => 'encrypted',
+        'paguelo_facil_api_key' => 'encrypted',
+        'paguelo_facil_webhook_secret' => 'encrypted',
     ];
 }
