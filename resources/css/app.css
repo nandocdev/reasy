@@ -21,18 +21,89 @@
     --color-zinc-800: var(--color-slate-800);
     --color-zinc-900: var(--color-slate-900);
     --color-zinc-950: var(--color-slate-950);
+
+    /* Reasy Brand Identity */
+    --color-brand-primary: #4f46e5;
+    --color-brand-secondary: #818cf8;
+    --color-brand-accent: #c084fc;
+
+    /* Semantic mapping */
+    --color-accent: var(--color-brand-primary);
+    --color-accent-content: #6366f1;
+    --color-accent-foreground: var(--color-white);
 }
 
-@theme {
-    --color-accent: var(--color-blue-500);
-    --color-accent-content: var(--color-blue-600);
-    --color-accent-foreground: var(--color-white);
+@layer base {
+    /* Smooth as butter scrolling */
+    html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Custom Modern Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-zinc-50 dark:bg-zinc-950;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-zinc-300 dark:bg-zinc-800 rounded-full border-4 border-solid border-zinc-50 dark:border-zinc-950;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-zinc-400 dark:bg-zinc-700;
+    }
+
+    /* Selection highlight */
+    ::selection {
+        @apply bg-brand-primary/20 text-brand-primary;
+    }
 }
 
 @layer theme {
     .dark {
-        --color-accent: var(--color-blue-500);
-        --color-accent-content: var(--color-blue-400);
+        --color-accent: var(--color-brand-primary);
+        --color-accent-content: var(--color-brand-secondary);
         --color-accent-foreground: var(--color-white);
     }
+}
+
+@layer utilities {
+    /* Glassmorphism primitives */
+    .glass {
+        @apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-white/20 dark:border-white/10;
+    }
+
+    /* Interactive Lifts */
+    .hover-lift {
+        @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-primary/10 active:translate-y-0 active:scale-[0.98];
+    }
+
+    /* Brand Gradients */
+    .bg-brand-gradient {
+        background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-accent) 100%);
+    }
+
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-brand-gradient;
+    }
+}
+
+/* Flux UI Overrides for high-end feel */
+[data-flux-card] {
+    @apply transition-all duration-300 border-zinc-200/50 dark:border-zinc-800/50;
+}
+
+[data-flux-card]:hover {
+    @apply border-brand-primary/30 shadow-lg shadow-brand-primary/5;
+}
+
+/* Refined focus states for accessibility */
+:focus-visible {
+    @apply outline-none ring-2 ring-brand-primary ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-950;
 }
