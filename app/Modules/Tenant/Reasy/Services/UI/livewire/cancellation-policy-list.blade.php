@@ -15,27 +15,27 @@
         </div>
 
         <flux:table :paginate="$policies">
-            <flux:columns>
-                <flux:column sortable>{{ __('Name') }}</flux:column>
-                <flux:column>{{ __('Status') }}</flux:column>
-                <flux:column align="end">{{ __('Actions') }}</flux:column>
-            </flux:columns>
+            <flux:table.columns>
+                <flux:table.column sortable>{{ __('Name') }}</flux:table.column>
+                <flux:table.column>{{ __('Status') }}</flux:table.column>
+                <flux:table.column align="end">{{ __('Actions') }}</flux:table.column>
+            </flux:table.columns>
 
-            <flux:rows>
+            <flux:table.rows>
                 @foreach ($policies as $policy)
-                    <flux:row :key="$policy->id">
-                        <flux:cell class="font-medium">
+                    <flux:table.row :key="$policy->id">
+                        <flux:table.cell class="font-medium">
                             {{ $policy->name }}
                             @if ($policy->is_default)
                                 <flux:badge color="emerald" size="sm" class="ml-2">{{ __('Default') }}</flux:badge>
                             @endif
-                        </flux:cell>
-                        <flux:cell>
+                        </flux:table.cell>
+                        <flux:table.cell>
                              <flux:badge color="{{ $policy->is_default ? 'emerald' : 'zinc' }}">
                                 {{ $policy->is_default ? __('Active') : __('Inactive') }}
                              </flux:badge>
-                        </flux:cell>
-                        <flux:cell align="end">
+                        </flux:table.cell>
+                        <flux:table.cell align="end">
                             <flux:dropdown>
                                 <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" />
                                 <flux:menu>
@@ -46,10 +46,10 @@
                                     @endif
                                 </flux:menu>
                             </flux:dropdown>
-                        </flux:cell>
-                    </flux:row>
+                        </flux:table.cell>
+                    </flux:table.row>
                 @endforeach
-            </flux:rows>
+            </flux:table.rows>
         </flux:table>
     </flux:card>
 </div>

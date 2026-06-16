@@ -19,29 +19,29 @@
         </div>
 
         <flux:table :paginate="$locations">
-            <flux:columns>
-                <flux:column sortable>{{ __('Name') }}</flux:column>
-                <flux:column>{{ __('City') }}</flux:column>
-                <flux:column>{{ __('Timezone') }}</flux:column>
-                <flux:column>{{ __('Status') }}</flux:column>
-                <flux:column align="end">{{ __('Actions') }}</flux:column>
-            </flux:columns>
+            <flux:table.columns>
+                <flux:table.column sortable>{{ __('Name') }}</flux:table.column>
+                <flux:table.column>{{ __('City') }}</flux:table.column>
+                <flux:table.column>{{ __('Timezone') }}</flux:table.column>
+                <flux:table.column>{{ __('Status') }}</flux:table.column>
+                <flux:table.column align="end">{{ __('Actions') }}</flux:table.column>
+            </flux:table.columns>
 
-            <flux:rows>
+            <flux:table.rows>
                 @foreach ($locations as $location)
-                    <flux:row :key="$location->id">
-                        <flux:cell class="font-medium">
+                    <flux:table.row :key="$location->id">
+                        <flux:table.cell class="font-medium">
                             <div class="flex flex-col">
                                 <span>{{ $location->name }}</span>
                                 <span class="text-xs text-zinc-500">{{ $location->slug }}</span>
                             </div>
-                        </flux:cell>
-                        <flux:cell>{{ $location->city ?: '-' }}</flux:cell>
-                        <flux:cell>{{ $location->timezone }}</flux:cell>
-                        <flux:cell>
+                        </flux:table.cell>
+                        <flux:table.cell>{{ $location->city ?: '-' }}</flux:table.cell>
+                        <flux:table.cell>{{ $location->timezone }}</flux:table.cell>
+                        <flux:table.cell>
                             <flux:switch wire:click="toggleStatus('{{ $location->id }}')" :checked="$location->is_active" />
-                        </flux:cell>
-                        <flux:cell align="end">
+                        </flux:table.cell>
+                        <flux:table.cell align="end">
                             <flux:dropdown>
                                 <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" />
                                 <flux:menu>
@@ -50,10 +50,10 @@
                                     <flux:menu.item wire:click="deleteLocation('{{ $location->id }}')" variant="danger" icon="trash">{{ __('Delete') }}</flux:menu.item>
                                 </flux:menu>
                             </flux:dropdown>
-                        </flux:cell>
-                    </flux:row>
+                        </flux:table.cell>
+                    </flux:table.row>
                 @endforeach
-            </flux:rows>
+            </flux:table.rows>
         </flux:table>
     </flux:card>
 </div>

@@ -15,37 +15,37 @@
         </div>
 
         <flux:table :paginate="$services">
-            <flux:columns>
-                <flux:column sortable>{{ __('Name') }}</flux:column>
-                <flux:column>{{ __('Category') }}</flux:column>
-                <flux:column>{{ __('Price') }}</flux:column>
-                <flux:column>{{ __('Duration') }}</flux:column>
-                <flux:column>{{ __('Status') }}</flux:column>
-                <flux:column align="end">{{ __('Actions') }}</flux:column>
-            </flux:columns>
+            <flux:table.columns>
+                <flux:table.column sortable>{{ __('Name') }}</flux:table.column>
+                <flux:table.column>{{ __('Category') }}</flux:table.column>
+                <flux:table.column>{{ __('Price') }}</flux:table.column>
+                <flux:table.column>{{ __('Duration') }}</flux:table.column>
+                <flux:table.column>{{ __('Status') }}</flux:table.column>
+                <flux:table.column align="end">{{ __('Actions') }}</flux:table.column>
+            </flux:table.columns>
 
-            <flux:rows>
+            <flux:table.rows>
                 @foreach ($services as $service)
-                    <flux:row :key="$service->id">
-                        <flux:cell class="font-medium">
+                    <flux:table.row :key="$service->id">
+                        <flux:table.cell class="font-medium">
                             <div class="flex flex-col">
                                 <span>{{ $service->name }}</span>
                                 <span class="text-xs text-zinc-500">{{ $service->slug }}</span>
                             </div>
-                        </flux:cell>
-                        <flux:cell>
+                        </flux:table.cell>
+                        <flux:table.cell>
                             {{ $service->category?->name ?: '-' }}
-                        </flux:cell>
-                        <flux:cell>
+                        </flux:table.cell>
+                        <flux:table.cell>
                             {{ number_format($service->price / 100, 2) }} {{ $service->currency }}
-                        </flux:cell>
-                        <flux:cell>
+                        </flux:table.cell>
+                        <flux:table.cell>
                             {{ $service->duration }} min
-                        </flux:cell>
-                        <flux:cell>
+                        </flux:table.cell>
+                        <flux:table.cell>
                             <flux:switch wire:click="toggleStatus('{{ $service->id }}')" :checked="$service->is_active" />
-                        </flux:cell>
-                        <flux:cell align="end">
+                        </flux:table.cell>
+                        <flux:table.cell align="end">
                             <flux:dropdown>
                                 <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" />
                                 <flux:menu>
@@ -54,10 +54,10 @@
                                     <flux:menu.item wire:click="deleteService('{{ $service->id }}')" variant="danger" icon="trash">{{ __('Delete') }}</flux:menu.item>
                                 </flux:menu>
                             </flux:dropdown>
-                        </flux:cell>
-                    </flux:row>
+                        </flux:table.cell>
+                    </flux:table.row>
                 @endforeach
-            </flux:rows>
+            </flux:table.rows>
         </flux:table>
     </flux:card>
 </div>

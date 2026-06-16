@@ -15,26 +15,26 @@
         </div>
 
         <flux:table :paginate="$categories">
-            <flux:columns>
-                <flux:column sortable>{{ __('Name') }}</flux:column>
-                <flux:column>{{ __('Slug') }}</flux:column>
-                <flux:column>{{ __('Services Count') }}</flux:column>
-                <flux:column align="end">{{ __('Actions') }}</flux:column>
-            </flux:columns>
+            <flux:table.columns>
+                <flux:table.column sortable>{{ __('Name') }}</flux:table.column>
+                <flux:table.column>{{ __('Slug') }}</flux:table.column>
+                <flux:table.column>{{ __('Services Count') }}</flux:table.column>
+                <flux:table.column align="end">{{ __('Actions') }}</flux:table.column>
+            </flux:table.columns>
 
-            <flux:rows>
+            <flux:table.rows>
                 @foreach ($categories as $category)
-                    <flux:row :key="$category->id">
-                        <flux:cell class="font-medium">
+                    <flux:table.row :key="$category->id">
+                        <flux:table.cell class="font-medium">
                             {{ $category->name }}
-                        </flux:cell>
-                        <flux:cell>
+                        </flux:table.cell>
+                        <flux:table.cell>
                              <flux:text color="zinc">{{ $category->slug }}</flux:text>
-                        </flux:cell>
-                        <flux:cell>
+                        </flux:table.cell>
+                        <flux:table.cell>
                              <flux:badge size="sm" inset="none">{{ $category->services_count ?? $category->services()->count() }}</flux:badge>
-                        </flux:cell>
-                        <flux:cell align="end">
+                        </flux:table.cell>
+                        <flux:table.cell align="end">
                             <flux:dropdown>
                                 <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" />
                                 <flux:menu>
@@ -43,10 +43,10 @@
                                     <flux:menu.item wire:click="deleteCategory('{{ $category->id }}')" variant="danger" icon="trash">{{ __('Delete') }}</flux:menu.item>
                                 </flux:menu>
                             </flux:dropdown>
-                        </flux:cell>
-                    </flux:row>
+                        </flux:table.cell>
+                    </flux:table.row>
                 @endforeach
-            </flux:rows>
+            </flux:table.rows>
         </flux:table>
     </flux:card>
 </div>
