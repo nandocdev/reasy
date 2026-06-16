@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+<div class="min-h-screen bg-zinc-50 dark:bg-zinc-950" style="--color-brand-primary: {{ $primaryColor === '#000000' ? '#4f46e5' : $primaryColor }};">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 glass border-b border-zinc-200 dark:border-zinc-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -7,18 +7,18 @@
                     @if($logoUrl)
                         <img src="{{ $logoUrl }}" class="h-8 w-auto">
                     @else
-                        <span class="text-xl font-bold tracking-tight text-zinc-900 dark:text-white" style="color: {{ $primaryColor }}">{{ $platformName }}</span>
+                        <span class="text-xl font-bold tracking-tight text-brand-primary dark:text-brand-secondary">{{ $platformName }}</span>
                     @endif
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                    <a href="#features" class="hover:text-zinc-900 dark:hover:text-white transition-colors">{{ __('Features') }}</a>
-                    <a href="#pricing" class="hover:text-zinc-900 dark:hover:text-white transition-colors">{{ __('Pricing') }}</a>
-                    <a href="#" class="hover:text-zinc-900 dark:hover:text-white transition-colors">{{ __('Documentation') }}</a>
+                    <a href="#features" class="hover:text-zinc-900 dark:hover:text-white transition-colors">{{ __('Características') }}</a>
+                    <a href="#pricing" class="hover:text-zinc-900 dark:hover:text-white transition-colors">{{ __('Precios') }}</a>
+                    <a href="#" class="hover:text-zinc-900 dark:hover:text-white transition-colors">{{ __('Documentación') }}</a>
                 </div>
 
                 <div class="flex items-center space-x-4">
-                        <flux:button href="/register" variant="primary" size="sm">{{ __('Get Started') }}</flux:button>
+                        <flux:button href="/register" variant="primary" size="sm">{{ __('Comenzar') }}</flux:button>
                   </div>
             </div>
         </div>
@@ -141,7 +141,6 @@
                             href="/register?plan={{ $plan->slug }}"
                             variant="{{ $plan->slug === 'professional' ? 'primary' : 'ghost' }}" 
                             class="w-full py-3 font-bold"
-                            style="{{ $plan->slug === 'professional' ? 'background-color: ' . $primaryColor : '' }}"
                         >
                             {{ __('Elegir Plan') }}
                         </flux:button>
@@ -159,7 +158,7 @@
                     @if($logoUrl)
                         <img src="{{ $logoUrl }}" class="h-6 w-auto">
                     @else
-                        <span class="font-bold tracking-tight text-zinc-900 dark:text-white" style="color: {{ $primaryColor }}">{{ $platformName }}</span>
+                        <span class="font-bold tracking-tight text-brand-primary dark:text-brand-secondary">{{ $platformName }}</span>
                     @endif
                 </div>
                 <p class="text-xs text-zinc-500">© 2026 {{ $platformName }}. {{ __('Todos los derechos reservados.') }}</p>

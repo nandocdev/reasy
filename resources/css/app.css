@@ -73,25 +73,28 @@
     }
 }
 
-@layer utilities {
-    /* Glassmorphism primitives */
-    .glass {
-        @apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-white/20 dark:border-white/10;
-    }
+/* Glassmorphism primitives */
+@utility glass {
+    @apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-white/20 dark:border-white/10;
+}
 
-    /* Interactive Lifts */
-    .hover-lift {
-        @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-primary/10 active:translate-y-0 active:scale-[0.98];
-    }
+/* Interactive Lifts */
+@utility hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-primary/10 active:translate-y-0 active:scale-[0.98];
+}
 
-    /* Brand Gradients */
-    .bg-brand-gradient {
-        background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-accent) 100%);
-    }
+/* Brand Gradients */
+@utility bg-brand-gradient {
+    background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-accent) 100%);
+}
 
-    .text-gradient {
-        @apply bg-clip-text text-transparent bg-brand-gradient;
-    }
+@utility text-gradient {
+    background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    display: inline-block;
 }
 
 /* Flux UI Overrides for high-end feel */
