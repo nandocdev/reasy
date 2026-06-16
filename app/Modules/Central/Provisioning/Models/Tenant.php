@@ -9,6 +9,7 @@ use App\Modules\Central\Features\Models\Concerns\HasFeatures;
 use App\Modules\Central\Features\Models\Concerns\HasQuotas;
 use App\Modules\Shared\Contracts\TenantContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -20,7 +21,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 
 class Tenant extends BaseTenant implements TenantWithDatabase, TenantContract
 {
-    use Billable, HasDatabase, HasDomains, HasFeatures, HasQuotas, HasUuids, Notifiable, SoftDeletes;
+    use Billable, HasDatabase, HasDomains, HasFactory, HasFeatures, HasQuotas, HasUuids, Notifiable, SoftDeletes;
 
     public $incrementing = false;
     protected $keyType = 'string';
@@ -61,5 +62,10 @@ class Tenant extends BaseTenant implements TenantWithDatabase, TenantContract
             'read_only',
             'archived_at',
         ];
+    }
+
+    protected static function newFactory()
+    {
+        return \App\Modules\Central\Provisioning\Database\Factories\TenantFactory::new();
     }
 }
