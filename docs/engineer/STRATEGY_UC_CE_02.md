@@ -13,7 +13,7 @@ Este documento define la estrategia técnica para unificar la facturación globa
 
 - [x] **Refactorizar `FulfillSubscription` Listener**: Asegurar que cuando un pago de PagueLoFácil sea `Approved`, se actualice la tabla `subscriptions` y el campo `plan_id` en `tenants`.
 - [x] **Sincronización con Stripe Webhooks**: Crear un Listener para eventos de Cashier (`WebhookReceived`) que mantenga el campo `plan_id` del Tenant actualizado en tiempo real.
-- [ ] **Lógica de Prorrateo**: Implementar una `Action` que calcule días restantes cuando un tenant cambia de un plan manual (PagueloFacil) a uno automático (Stripe) o viceversa.
+- [x] **Lógica de Prorrateo**: Implementar una `Action` que calcule días restantes cuando un tenant cambia de un plan manual (PagueloFacil) a uno automático (Stripe) o viceversa.
 
 ## 3. Fase de Control (Enforcement)
 **Objetivo:** Bloqueo automático por falta de pago.
