@@ -119,6 +119,20 @@ final class CheckoutComponent extends Component {
      */
     public function handlePaymentResult(string $status, string $displayId): void {
         if ($status === 'approved') {
+            // For local development, we immediately fulfill the subscription
+            // since we won't receive webhooks from PagueloFacil.
+            if (app()->isLocal() && ($this->customFieldValues['type'] ?? '') === 'subscription') {
+                try {
+                    app(\App\Modules\Central\Billing\Actions\ActivateTenantPlanAction::class)->execute(
+                        tenantId: (string) tenancy()->tenant->id,
+                        planId: (string) $this->customFieldValues['plan_id'],
+                        provider: 'manual_dev'
+                    );
+                } catch (\Exception $e) {
+                    logger()->error('Local simulation fulfillment failed: ' . $e->getMessage());
+                }
+            }
+
             $this->completed = true;
             $this->dispatch('payment-approved', displayId: $displayId);
         } else {
