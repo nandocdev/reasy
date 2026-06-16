@@ -5,14 +5,14 @@ Este documento define la estrategia técnica para unificar la facturación globa
 ## 1. Fase de Abstracción (Shared Context)
 **Objetivo:** Crear un lenguaje común para las suscripciones.
 
-- [ ] **Definir `SubscriptionInterface`**: Crear un contrato en `Shared\Contracts\Billing` que defina métodos como `isActive()`, `getPlan()`, `getExpiryDate()`.
-- [ ] **Crear `BillingManager`**: Un servicio en `Shared` que resuelva si un Tenant debe ser validado contra Stripe o contra la base de datos local (PagueLoFácil).
+- [x] **Definir `SubscriptionInterface`**: Crear un contrato en `Shared\Contracts\Billing` que defina métodos como `isActive()`, `getPlan()`, `getExpiryDate()`.
+- [x] **Crear `BillingManager`**: Un servicio en `Shared` que resuelva si un Tenant debe ser validado contra Stripe o contra la base de datos local (PagueLoFácil).
 
 ## 2. Fase de Implementación (Central context)
 **Objetivo:** Sincronizar el estado del dinero con el acceso al sistema.
 
-- [ ] **Refactorizar `FulfillSubscription` Listener**: Asegurar que cuando un pago de PagueLoFácil sea `Approved`, se actualice la tabla `subscriptions` y el campo `plan_id` en `tenants`.
-- [ ] **Sincronización con Stripe Webhooks**: Crear un Listener para eventos de Cashier (`WebhookReceived`) que mantenga el campo `plan_id` del Tenant actualizado en tiempo real.
+- [x] **Refactorizar `FulfillSubscription` Listener**: Asegurar que cuando un pago de PagueLoFácil sea `Approved`, se actualice la tabla `subscriptions` y el campo `plan_id` en `tenants`.
+- [x] **Sincronización con Stripe Webhooks**: Crear un Listener para eventos de Cashier (`WebhookReceived`) que mantenga el campo `plan_id` del Tenant actualizado en tiempo real.
 - [ ] **Lógica de Prorrateo**: Implementar una `Action` que calcule días restantes cuando un tenant cambia de un plan manual (PagueloFacil) a uno automático (Stripe) o viceversa.
 
 ## 3. Fase de Control (Enforcement)

@@ -33,6 +33,11 @@ class BillingServiceProvider extends ServiceProvider
         );
 
         Event::listen(
+            \Laravel\Cashier\Events\WebhookReceived::class,
+            \App\Modules\Central\Billing\Listeners\SyncStripeSubscription::class
+        );
+
+        Event::listen(
             \App\Modules\Shared\Events\PaymentFailed::class,
             \App\Modules\Central\Billing\Listeners\HandlePaymentFailure::class
         );

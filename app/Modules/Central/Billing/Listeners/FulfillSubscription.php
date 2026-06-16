@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Modules\Central\Billing\Listeners;
 
-use App\Modules\Central\Billing\Models\Subscription;
-use App\Modules\Central\Billing\Models\Plan;
-use App\Modules\Central\Provisioning\Models\Tenant;
+use App\Modules\Central\Billing\Actions\ActivateTenantPlanAction;
 use App\Modules\Central\Payments\Events\PaymentApproved;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class FulfillSubscription {
+    public function __construct(
+        private ActivateTenantPlanAction $activatePlanAction
+    ) {}
+
     /**
      * Handle the event.
      */
@@ -34,31 +35,12 @@ class FulfillSubscription {
                 return;
             }
 
-            $tenant = Tenant::findOrFail($tenantId);
-            $plan = Plan::findOrFail($planId);
-
-            // Create or update subscription record
-            Subscription::updateOrCreate(
-                [
-                    'tenant_id' => $tenant->id,
-                    'provider_subscription_id' => $result->gatewayReference,
-                ],
-                [
-                    'plan_id' => $plan->id,
-                    'status' => 'active',
-                    'gateway' => 'paguelofacil',
-                    'current_period_end' => now()->addMonth(), // Assuming monthly for this flow
-                ]
+            $this->activatePlanAction->execute(
+                tenantId: $tenantId,
+                planId: $planId,
+                provider: 'paguelofacil',
+                providerSubscriptionId: $result->gatewayReference
             );
-
-            // Update tenant's current plan
-            $tenant->update(['plan_id' => $plan->slug]);
-
-            Log::info("Subscription fulfilled via Payments engine", [
-                'tenant' => $tenant->id,
-                'plan' => $plan->slug,
-                'payment_id' => $payment->id
-            ]);
 
         } catch (\Exception $e) {
             Log::error("Error fulfilling subscription from approved payment: " . $e->getMessage());
