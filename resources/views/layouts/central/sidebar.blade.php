@@ -34,6 +34,14 @@
                     :current="request()->routeIs('central.support.broadcasts')" wire:navigate>
                     {{ __('Broadcast Center') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="users" :href="route('central.support.tenants')"
+                    :current="request()->routeIs('central.support.tenants')" wire:navigate>
+                    {{ __('Tenant Support') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="clipboard-document-list" :href="route('central.support.audit-log')"
+                    :current="request()->routeIs('central.support.audit-log')" wire:navigate>
+                    {{ __('Central Audit Log') }}
+                </flux:sidebar.item>
             </flux:sidebar.group>
 
             <flux:sidebar.group :heading="__('Billing')" class="grid">
