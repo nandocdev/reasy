@@ -7,11 +7,12 @@ namespace App\Modules\Tenant\Reasy\Schedules\Models;
 use App\Modules\Shared\Tenancy\Models\Concerns\BelongsToTenant;
 use App\Modules\Tenant\Reasy\Resources\Models\Resource;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ScheduleException extends Model
 {
-    use BelongsToTenant, HasUuids;
+    use BelongsToTenant, HasUuids, HasFactory;
 
     protected $fillable = [
         'resource_id',
@@ -30,5 +31,10 @@ class ScheduleException extends Model
     public function resource()
     {
         return $this->belongsTo(Resource::class);
+    }
+
+    protected static function newFactory()
+    {
+        return \App\Modules\Tenant\Reasy\Schedules\Database\Factories\ScheduleExceptionFactory::new();
     }
 }
