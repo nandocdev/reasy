@@ -18,4 +18,5 @@ return [
     App\Modules\Tenant\Identity\Providers\IdentityServiceProvider::class,
     App\Modules\Tenant\Settings\Providers\SettingsServiceProvider::class,
     App\Modules\Tenant\Audit\Providers\AuditServiceProvider::class,
+    App\Modules\Tenant\Reasy\Providers\ReasyServiceProvider::class,
 ];
