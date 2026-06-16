@@ -13,9 +13,10 @@ use App\Modules\Tenant\Reasy\Resources\DTOs\ResourceData;
 use App\Modules\Tenant\Reasy\Resources\Models\Resource;
 use App\Modules\Tenant\Reasy\Services\Models\Service;
 use App\Modules\Central\Provisioning\Models\Tenant;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-uses(TestCase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 beforeEach(function () {
     // Setup Tenant context
